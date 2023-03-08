@@ -4,7 +4,8 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="./styles.css">
+
         <title>Form</title>
     </head>
     <body>
@@ -21,47 +22,62 @@
                     <br><br>
                     <label for="age">Age</label>
                     <input type="number" name="age" id="age">
+                    <br><br>
+                    <label for="sexe">Genre:</label>
+                    <?php
+                        foreach($sexes as $cle=>$sexe) {
+                            echo "<input type = 'radio' name = 'sexe' value='$cle' ";
+                            if ($valeurs['genre']==$cle) echo "checked = 'checked'";
+                            echo "/>$sexe";
+                        }
+                    ?>
                 </fieldset>
                 <br><br>
                 <fieldset>
                     <legend>Compétences dans les langages informatiques</legend>
-                    <label for="c">C</label>
-                    <input type="checkbox" name="c" id="c">
 
-                    <label for="c++">C++</label>
-                    <input type="checkbox" name="c++" id="c++">
-
-                    <label for="java">Java</label>
-                    <input type="checkbox" name="java" id="java">
-
-                    <label for="php">PHP</label>
-                    <input type="checkbox" name="php" id="php">
-
-                    <label for="python">Python</label>
-                    <input type="checkbox" name="python" id="python">
-
-                    <label for="typescript">TypeScript</label>
-                    <input type="checkbox" name="typescript" id="typescript">
-                    <lable for="cobol">Cobol</lable>
-                    <input type="checkbox" name="cobol" id="cobol">
-                    <lable for="aucun">Aucun</lable>
-                    <input type="checkbox" name="aucun" id="aucun">
+                    <?php     
+                        foreach ($listeLangages as $unLangage){
+                            echo "<input type='checkbox' name='langages[$unLangage]' value='$unLangage' ";
+                            if (isset($valeurs['langages'][$unLangage])) echo 'checked ="checked"';
+                            echo " /> $unLangage";
+                        }
+                    ?>
                 </fieldset>
                 <br><br>
                 <fieldset>
                     <legend>Langue maternelle</legend>
-                    <select>
-                        <option value="français">Français</option>
-                        <option value="anglais">Anglais</option>
-                        <option value="espagnol">Espagnol</option>
-                        <option value="allemand">Allemand</option>
-                        <option value="italien">Italien</option>
-                        <option value="chinois">Chinois</option>
-                        <option value="japonais">Japonais</option>
-                        <option value="russe">Russe</option>
-                        <option value="arabe">Arabe</option>
+                    <select name="langue" >
+                    <?php
+                        foreach ($langues as $uneLangue){
+                            echo "<option value='$uneLangue'";
+                            if ($uneLangue == $valeurs['langue']) {
+                            echo 'selected="selected"';
+                            }
+                            echo ">", $uneLangue, "</option>";
+
+                        }
+                    ?>
                     </select>
                 </fieldset>
+
+                <button type="submit">Valider</button>
+                <button type="reset">Reset</button>
+            </form>
         </section>
+        <div id="resultat">
+            <?php
+                if (!empty($valeurs['nom'])){
+                    echo "<p>Bonjour " .$valeurs['prenom'] ." " .$valeurs['nom'] .", vous avez " .$valeurs['age'] ." ans.</p>";
+                    $typeGenre = ($valeurs['sexe'] == "F")?"une femme": (($valeurs['sexe'] == "M")?"un homme":"de sexe inconnu");
+                    echo "<p>Vous êtes $typeGenre.</p>";
+                    echo "<p>Vous connaissez les langages suivants : ";
+                    foreach ($valeurs['langages'] as $key => $value) {
+                      echo $key, ' ';
+                    }
+                    echo "<p>Votre langue maternelle est : ". $valeurs['langue']."</p>";
+                  }
+            ?>
+        </div>
     </body>
 </html>
